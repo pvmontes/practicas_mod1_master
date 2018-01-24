@@ -1,0 +1,55 @@
+
+--1
+SELECT e.nombre_est,e.puntos,s.decision
+FROM estudiantes e INNER JOIN solicitudes s
+ON e.id=s.id
+WHERE e.valor<=1000
+AND s.via LIKE '%tecnologia'
+AND s.nombre_inst LIKE '%Maeztu'
+
+
+--2
+SELECT e.id,e.nombre_est,s.nombre_inst,e.puntos,i.plazas
+FROM estudiantes e INNER JOIN solicitudes s 
+ON e.id=s.id
+INNER JOIN institutos i
+ON s.nombre_inst=i.nombre_inst
+ORDER BY puntos DESC,plazas;
+
+--3
+SELECT * 
+FROM solicitudes
+WHERE via LIKE '%ciencias%'
+
+
+--4
+--?
+
+--5
+DELETE FROM estudiantes WHERE id = 
+(SELECT id FROM solicitudes 
+GROUP BY id,via
+HAVING COUNT(via) > 2 )
+
+
+--6
+SELECT s.via,puntos
+FROM solicitudes s INNER JOIN estudiantes e
+ON e.id=s.id
+GROUP BY via
+HAVING(MAX(2) < (SELECT AVG(puntos) FROM estudiantes))
+
+    
+--7
+SELECT DISTINCT nombre_est,via
+FROM estudiantes INNER JOIN solicitudes
+ON estudiantes.id=solicitudes.id
+
+
+--8
+SELECT e.nombre_est,e.puntos
+FROM estudiantes e INNER JOIN solicitudes s
+ON e.id=s.id
+WHERE e.valor < 1000
+AND via LIKE '%tecnologia%'
+AND s.nombre_inst LIKE '%isidro%'

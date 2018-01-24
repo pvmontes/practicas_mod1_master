@@ -1,0 +1,70 @@
+#!/bin/bash
+
+echo "Elija una opción:"
+echo "Ver directorio actual....[1]"
+echo "Copiar archivos..........[2]"
+echo "Editar...................[3]"
+echo "Imprimir archivo.........[4]"
+echo "Salir del menú...........[5]"
+
+
+read sn
+echo "El número introducido es" $sn
+
+case $sn in
+1) ls .
+;;
+2) echo "Por favor, introduzca el nombre del archivo que se quiere copiar"; 
+   read archivo_origen;
+   if [ -e $archivo_origen ]
+   then 
+   echo "Ahora indique el nombre del archivo de destino"
+   else
+   echo "Por favor, indique el nombre de un fichero que exista."
+   exit;
+   fi
+   read archivo_destino;
+   if [ -e $archivo_destino ]
+   then 
+      cp $archivo_origen $archivo_destino;
+      echo "Copia realizada con éxito."
+   else
+      echo "Por favor, introduzca el nombre de un archivo de destino válido."
+      read archivo_destino;
+      c=0
+      while [ ! -e $archivo_destino ] && [ $c -lt 3 ]
+      do 
+         echo "Por favor, introduzca el nombre de un archivo de destino válido.";
+         c=$((c+1)) 
+         echo $c;
+         echo "Por favor, introduzca de nuevo un nombre de archivo válido.";
+         read archivo_destino;
+         echo "Se han superado el número admitido de intentos. Se saldrá del script."
+      done
+   fi
+
+;;
+3) echo "Por favor, introduzca el nombre del fichero que se desea editar";
+   read archivo_a_editar;
+   if [ -e $archivo_a_editar ]
+   then
+   vi $archivo_a_editar
+   else
+   echo "Por favor, introduzca el nombre de un archivo que exista"
+   fi
+;;
+4) echo "Introduzca el nombre de un archivo:";
+   read archivo_imprimir;
+   if [ ! -e $archivo_imprimir ]
+   then
+   echo "No existe ese archivo."
+   else
+   lpr $archivo_imprimir
+   echo "Archivo impreso con éxito."
+   fi
+;;
+5) exit
+;;
+*) echo "Por favor, elija una opción válida."
+;;
+esac
